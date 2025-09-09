@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta>
+  <title>Simple Online Store</title>
+  <style>
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Online Store</h1>
+  </header>
+  <div class="products">
+    <div class="product" data-name="T-shirt" data-price="20">
+      <img src="https://via.placeholder.com/200x150?text=T-shirt" alt="T-shirt">
+      <h3>T-shirt</h3>
+      <p>$20</p>
+      <button onclick="addToCart('T-shirt', 20)">Add to Cart</button>
+    </div>
+    <div class="product" data-name="Mug" data-price="12">
+      <img src="https://via.placeholder.com/200x150?text=Mug" alt="Mug">
+      <h3>Mug</h3>
+      <p>$12</p>
+      <button onclick="addToCart('Mug', 12)">Add to Cart</button>
+    </div>
+    <div class="product" data-name="Hat" data-price="15">
+      <img src="https://via.placeholder.com/200x150?text=Hat" alt="Hat">
+      <h3>Hat</h3>
+      <p>$15</p>
+      <button onclick="addToCart('Hat', 15)">Add to Cart</button>
+    </div>
+  </div>
+
+  <button id="show-cart-btn" onclick="toggleCart()">View Cart</button>
+  <aside id="cart" class="hide">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <p><strong>Total: $<span id="cart-total">0</span></strong></p>
+    <button onclick="toggleCart()">Close</button>
+  </aside>
+
+  <script>
+    let cart = {};
+
+    function addToCart(name, price) {
+      if (cart[name]) {
+        cart[name].qty += 1;
+      } else {
+        cart[name] = {price, qty: 1};
+      }
+      updateCartView();
+    }
+    
+    function updateCartView() {
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      cartItems.innerHTML = '';
+      let total = 0;
+
+      Object.keys(cart).forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'cart-item';
+        el.innerHTML = `<span class="cart-item-title">${item}</span>
+                        <span class="cart-item-qty">x ${cart[item].qty}</span>
+                        <span>$${cart[item].price * cart[item].qty}</span>`;
+        cartItems.appendChild(el);
+        total += cart[item].price * cart[item].qty;
+      });
+      cartTotal.textContent = total;
+    }
+
+    function toggleCart() {
+      document.getElementById('cart').classList.toggle('hide');
+    }
+  </script>
+</body>
+</html>
